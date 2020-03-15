@@ -64,78 +64,88 @@ $(function() {
             let $data = $(data);
             let elements = $data.find('.kanren.kanren-itiran dl');
             //console.log('Elements are the following:', elements);
-            elements.each(function(index) {
-                let $this = $(this);
-                let $a = $this.find('a');
-                let href = $a.attr('href');
-                let image = $a.find('img').attr('src');
-                let $newposts = $this.find('section span.newposts');
-                let hasNewPosts = false;
-                if ($newposts.length !== 0) {
-                    hasNewPosts = true;
-                }
-                let date = $this.find("dd p").text();
-                let $link = $this.find("dd a");
-                let name = $link.text();
-                //console.log(href, name, image, date, hasNewPosts);
 
-                let $tr = $('<tr>')
-                    .append($('<td>')
-                    .append($('<img>')
-                        .attr('src', image)
-                        .attr('width', 80)
-                        .attr('height', 80)
-                    )
-                );
-
-                let linkHtml = name;
-                if (hasNewPosts) {
-                    linkHtml = '<span class="badge badge-danger">New!</span> ' + linkHtml;
-                }
-
-                $tableBody
-                    .append($tr
+            if (elements.length > 0) {
+                elements.each(function(index) {
+                    let $this = $(this);
+                    let $a = $this.find('a');
+                    let href = $a.attr('href');
+                    let image = $a.find('img').attr('src');
+                    let $newposts = $this.find('section span.newposts');
+                    let hasNewPosts = false;
+                    if ($newposts.length !== 0) {
+                        hasNewPosts = true;
+                    }
+                    let date = $this.find("dd p").text();
+                    let $link = $this.find("dd a");
+                    let name = $link.text();
+                    //console.log(href, name, image, date, hasNewPosts);
+    
+                    let $tr = $('<tr>')
                         .append($('<td>')
-                            .append($('<a>')
-                                .attr('href', href)
-                                .html(linkHtml)
-                            )
-                        )
-                        .append($('<td>')
-                            .text(date)
-                        )
-                        .append($('<td>')
-                            .append($('<button>')
-                                .attr('type', 'button')
-                                .addClass('btn btn-primary')
-                                .on('click', function() {
-                                    download(href, $(this));
-                                })
-                                .text('Download')
-                            )
+                        .append($('<img>')
+                            .attr('src', image)
+                            .attr('width', 80)
+                            .attr('height', 80)
                         )
                     );
-            });
-
-            // Add a button to load more elements here
-            let nextPageUrl = $data.find('#contentInner > div > article div.st-pagelink a.next.page-numbers')
-                .attr('href');
-            console.log('Next page url:', nextPageUrl);
-
-            if (nextPageUrl) {
+    
+                    let linkHtml = name;
+                    if (hasNewPosts) {
+                        linkHtml = '<span class="badge badge-danger">New!</span> ' + linkHtml;
+                    }
+    
+                    $tableBody
+                        .append($tr
+                            .append($('<td>')
+                                .append($('<a>')
+                                    .attr('href', href)
+                                    .html(linkHtml)
+                                )
+                            )
+                            .append($('<td>')
+                                .text(date)
+                            )
+                            .append($('<td>')
+                                .append($('<button>')
+                                    .attr('type', 'button')
+                                    .addClass('btn btn-primary')
+                                    .on('click', function() {
+                                        download(href, $(this));
+                                    })
+                                    .text('Download')
+                                )
+                            )
+                        );
+                });
+    
+                // Add a button to load more elements here
+                let nextPageUrl = $data.find('#contentInner > div > article div.st-pagelink a.next.page-numbers')
+                    .attr('href');
+                console.log('Next page url:', nextPageUrl);
+    
+                if (nextPageUrl) {
+                    $tableBody
+                        .append($('<tr>')
+                            .append($('<td colspan="4">')
+                                .attr('align', 'center')
+                                .append($('<button>')
+                                    .attr('type', 'button')
+                                    .addClass('btn btn-primary load-more')
+                                    .text('Load more')
+                                    .on('click', function() {
+                                        newSearch = false;
+                                        loadMoreElements(nextPageUrl);
+                                    })
+                                )
+                            )
+                        );
+                }
+            } else {
                 $tableBody
                     .append($('<tr>')
                         .append($('<td colspan="4">')
-                            .attr('align', 'center')
-                            .append($('<button>')
-                                .attr('type', 'button')
-                                .addClass('btn btn-primary load-more')
-                                .text('Load more')
-                                .on('click', function() {
-                                    newSearch = false;
-                                    loadMoreElements(nextPageUrl);
-                                })
-                            )
+                            .text('Nothing found, try something else.')
                         )
                     );
             }
