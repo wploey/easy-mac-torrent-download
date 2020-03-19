@@ -9,6 +9,9 @@
     </div>
 
     {% include scripts.html %}
+    {% if page.before_script %}
+      <script src="{{ page.before_script }}"></script>
+    {% endif %}
     <script src="./js/script.js"></script>
     <script src="{{ page.include_script }}"></script>
   </body>
