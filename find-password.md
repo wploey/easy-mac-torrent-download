@@ -4,6 +4,7 @@
 
 layout: index
 title: Find Password
+before_script: https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js
 include_script: "./js/findPassword.js"
 ---
 <h1 class="text-center">Find Password | Easy mac-torrent-download</h1>
@@ -18,16 +19,6 @@ include_script: "./js/findPassword.js"
     <div class="alert alert-danger" role="alert" id="error-alert" style="display:none">
         Error getting the password from the given URL.
     </div>
-    <!--
-    <div class="form-group">
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Password</span>
-            </div>
-            <input type="text" class="form-control" id="password" readonly>
-        </div>
-    </div>
-    -->
 </form>
 
 <div class="input-group">
@@ -39,5 +30,3 @@ include_script: "./js/findPassword.js"
     <button class="btn btn-outline-secondary" type="button" id="copy-button" data-clipboard-target="#password">Copy</button>
   </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
