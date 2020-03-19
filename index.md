@@ -4,6 +4,7 @@
 
 layout: index
 include_script: "./js/home.js"
+title: "Home"
 ---
 <h1 class="text-center">Easy mac-torrent-download</h1>
 <form id="searchForm">
