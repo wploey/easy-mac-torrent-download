@@ -31,7 +31,7 @@ pages_list:
   - name: Home
     url: /
   - name: Find Password
-    url: /find-password
+    url: ./find-password
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
