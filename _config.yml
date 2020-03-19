@@ -29,7 +29,7 @@ plugins:
 
 pages_list:
   - name: Home
-    url: /
+    url: ./
   - name: Find Password
     url: ./find-password
 
