@@ -12,6 +12,19 @@ $(function() {
         console.log('URL from which retrieving the password:', passwordUrl);
 
         $.get( CORS_ANYWHERE + passwordUrl, function(data){
+            newUrl = data.matches("atob\('(.*)'\)");
+
+            // TODO Find the element in the first group
+
+            // TODO Decode it using atob
+
+            // TODO Access to the new URL
+
+            // TODO Find the string like this 'alert-danger','value','bWFjLXRvcnJlbnQtZG93bmxvYWQubmV0X25xMQ=='];(function(
+
+            // TODO Decode it using atob
+
+            // TODO Print the password
             let $data = $(data);
             let $passwd = $data.find("#passwd");
             let $password = $("#password");
