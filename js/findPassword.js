@@ -1,5 +1,5 @@
-const FIRST_STEP_REGEX = /const urlstrings = atob\('(.*)'\)/g;
-const SECOND_STEP_REGEX = /,'value','(.*)'\];/g;
+const FIRST_STEP_REGEX = /const urlstrings = atob\('(.*)'\)/;
+const SECOND_STEP_REGEX = /,'value','(.*)'\];/;
 const LOADING_SPINNER = '<span class="spinner-border spinner-border-sm"></span> Loading...';
 
 $(function() {
