@@ -1,56 +1,68 @@
+const FIRST_STEP_REGEX = /const urlstrings = atob\('(.*)'\)/g;
+const SECOND_STEP_REGEX = /,'value','(.*)'\];/g;
 const LOADING_SPINNER = '<span class="spinner-border spinner-border-sm"></span> Loading...';
 
 $(function() {
 
     new ClipboardJS('#copy-button');
+    let $password = $("#password");
 
     function showErrorAlert() {
         $("#error-alert").show();
     }
 
+    function loadPasswordError() {
+        console.log('Error retrieving the password');
+        showErrorAlert();
+        hideLoaderForSearchButton();
+    }
+
     function loadPassword(passwordUrl) {
         console.log('URL from which retrieving the password:', passwordUrl);
 
-        $.get( CORS_ANYWHERE + passwordUrl, function(data){
-            newUrl = data.matches("atob\('(.*)'\)");
+        $.get( CORS_ANYWHERE + passwordUrl, function(data) {
+            // Find the first password URL
+            let matches = FIRST_STEP_REGEX.exec(data);
+            if (!matches || matches.length < 2) {
+                console.log('Cannot match the first RegEx', matches);
+                return loadPasswordError();
+            }
+            let newUrl = atob(matches[1]);
+            console.log('First found URL', newUrl);
 
-            // TODO Find the element in the first group
+            // Access to the new URL
+            $.get( CORS_ANYWHERE + newUrl, function(data) {
+                // Find the password here
+                let matches = SECOND_STEP_REGEX.exec(data);
 
-            // TODO Decode it using atob
+                if (!matches || matches.length < 2) {
+                    console.log('Cannot match the second RegEx', matches);
+                    return loadPasswordError();
+                }
 
-            // TODO Access to the new URL
+                let $passwd = atob(matches[1]);
 
-            // TODO Find the string like this 'alert-danger','value','bWFjLXRvcnJlbnQtZG93bmxvYWQubmV0X25xMQ=='];(function(
+                let clazz = 'is-invalid';
+                if ($passwd.length > 0) {
+                    let password = $passwd;
 
-            // TODO Decode it using atob
-
-            // TODO Print the password
-            let $data = $(data);
-            let $passwd = $data.find("#passwd");
-            let $password = $("#password");
-
-            let clazz = 'is-invalid';
-            if ($passwd.length > 0) {
-                clazz = 'is-valid';
-                let password = $passwd.val();
-
-                if (password) {
-                    console.log('The password is: ' + password);
-                    $password.val(password);
+                    if (password) {
+                        clazz = 'is-valid';
+                        console.log('The password is: ' + password);
+                        $password.val(password);
+                    } else {
+                        showErrorAlert();
+                    }
                 } else {
-                    clazz = 'is-invalid';
                     showErrorAlert();
                 }
-            } else {
-                showErrorAlert();
-            }
 
-            $password.addClass(clazz);
-            hideLoaderForSearchButton();
+                $password.addClass(clazz);
+                hideLoaderForSearchButton();
+            });
         }).fail(function(error) {
-            console.log('Error retrieving the password');
-            showErrorAlert();
-            hideLoaderForSearchButton();
+            console.log(error);
+            loadPasswordError();
         });
     }
 
